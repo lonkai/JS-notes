@@ -36,7 +36,8 @@ b = Number(a);
 ```js
 a = a + "";
 ```
-# Block це об’єднання statements
+# Block
+об’єднання statements
 ```js
 {
     var a = 42;
