@@ -34,7 +34,7 @@ b = Number(a);
 ```
 ### Coversion
 ```js
-a = a + “”;
+a = a + "";
 ```
 # Block це об’єднання statements
 ```js
@@ -61,7 +61,7 @@ b,bar,zaz - parameters
 0
 -0
 NaN
-“”
+""
 false
 null
 undefined
