@@ -1,18 +1,18 @@
 # Statement 
-інструкція, відділяється “;”.
+Інструкція, відділяється “;”.
 
 # Expression
 Вираз, не завжди якась операція, може бути просто число чи змінна.
 
-В дужках всі expressions '((a) = ((b) * (2)));'
+В дужках всі expressions `((a) = ((b) * (2)));`
 
 Очевидно, шо разом це statement.
 
-'a = b * 2 + foo(c * 3);' - так, як в  нас вже є (), юзанем [].
+`a = b * 2 + foo(c * 3);` - так, як в  нас вже є (), юзанем [].
 
-'[ [a] = [ [ [b] * [2] ] + [ [foo]([ [c] * [3] ]) ] ] ];'
+`[ [a] = [ [ [b] * [2] ] + [ [foo]([ [c] * [3] ]) ] ] ];`
 
-'*' має більший пріоритет, ніж '+', шоб обійти це, можна виділити дужками потрібну операцію.
+`*` має більший пріоритет, ніж `+`, шоб обійти це, можна виділити дужками потрібну операцію.
 
 # Programming LVL
 ```js
@@ -46,13 +46,15 @@ a = a + “”;
 Після блоку «;» ставити не потрібно.
 
 # Functions
-* function foo() {} – function declaration
-* var bar = function() {} – function expression attached to variable declaration
-* var bar = function baz() {} – named function expression attached to variable declaration
+* `function foo() {}` – function declaration
+* `var bar = function() {}` – function expression attached to variable declaration
+* `var bar = function baz() {}` – named function expression attached to variable declaration
 
-function foo(b,bar,zaz) {} b,bar,zaz - parameters
+`function foo(b,bar,zaz) {}` 
+b,bar,zaz - parameters
 
-foo(100); “100” - argument
+`foo(100);` 
+“100” - argument
 
 # “Falsy” values:
 ```js
