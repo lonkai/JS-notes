@@ -43,7 +43,7 @@ a = a + “”;
     foo(a / 2);
 }
 ```
-Після блоку «;» ставити не потрібно.
+Після блоку `;` ставити не потрібно.
 
 # Functions
 * `function foo() {}` – function declaration
