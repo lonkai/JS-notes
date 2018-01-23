@@ -80,40 +80,40 @@ undefined
 ### Function and Array are Object subtypes
 ```js
 var a;
-typeof a;				// "undefined"
+typeof a;   // "undefined"
 
 a = "hello world";
-typeof a;				// "string"
+typeof a;   // "string"
 
 a = 42;
-typeof a;				// "number"
+typeof a;   // "number"
 
 a = true;
-typeof a;				// "boolean"
+typeof a;   // "boolean"
 
 a = null;
-typeof a;				// "object" — ЙОПТА! Давній баг. Не виправляють, бо тупо багато коду спирається не нього.
+typeof a;   // "object" — ЙОПТА! Давній баг. Не виправляють, бо тупо багато коду спирається не нього.
 
 a = undefined;
-typeof a;				// "undefined"
+typeof a;   // "undefined"
 
 a = { b: "c" };
-typeof a;				// "object"
+typeof a;   // "object"
 
 a = Symbol();
-typeof a;               // "symbol"
+typeof a;   // "symbol"
 
 a = function() {}
-typeof a;               // "function"
+typeof a;   // "function"
 ```
 `typeof null` - давній баг. Не виправляють, бо тупо багато коду спирається не нього.
 
 # Objects
 ```js
-obj.a;                  // "hello world"
+obj.a;      // "hello world"
 ```
 ```js
-obj["a"];               // "hello world"
+obj["a"];   // "hello world"
 ```
 "Лапкова" нотація може використовуватись, коли ім`я властивості зберігається в змінній 
 або властивість містить спеціальні символи.
