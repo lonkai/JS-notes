@@ -23,16 +23,17 @@ mov 2,a
 ```
 Javasript engine – те, шо перетворює javascript на код нижчого рівня, встроєний в більшість браузерів.
 
-Javascript – мова скриптів, її вважають інтерпретуючою мовою, тому шо ми считуємо стейтмент за стейтментом. Коли ми виконуємо 3 стейтмент, ми не знаємо, шо буде в 5 стейтменті. Але це не зовсім так. Javascript схожий на компілюючу мову, де спочатку engine проходить весь код, якшо код коректний, тоді ранить його.(2 етапи). В Javascript програмі, коли є два стейтменти і один з них неправильний, перший стейтмент не зараниться.
+Javascript – мова скриптів, її вважають інтерпретуючою мовою, тому шо ми считуємо стейтмент за стейтментом. Коли ми виконуємо 3 стейтмент, ми не знаємо, шо буде в 5 стейтменті. Але це не зовсім так. Javascript схожий на компілюючу мову, де спочатку engine проходить весь код, якшо код коректний, тоді ранить його(2 етапи). В Javascript програмі, коли є два стейтменти і один з них неправильний, перший стейтмент не зараниться.
 
-# Conversion and Coversion(not obvious)
+# Conversion and Coersion(not obvious)
 Зведення типів.
 ### Conversion
 ```js
 a = String(a);
 b = Number(a);
+c = Boolean(a);
 ```
-### Coversion
+### Coersion
 ```js
 a = a + "";
 ```
@@ -52,10 +53,10 @@ a = a + "";
 * `var bar = function baz() {}` – named function expression attached to variable declaration
 
 `function foo(b,bar,zaz) {}` 
-b,bar,zaz - parameters
+b,bar,zaz - параметри
 
 `foo(100);` 
-“100” - argument
+“100” - аргумент
 
 # “Falsy” values:
 ```js
@@ -75,7 +76,7 @@ undefined
 * `null`
 * `undefined`
 * `object`
-* `symbol`
+* `symbol` //ES6
 ### Function and Array are Object subtypes
 ```js
 var a;
@@ -91,7 +92,7 @@ a = true;
 typeof a;				// "boolean"
 
 a = null;
-typeof a;				// "object" — черт, ошибка
+typeof a;				// "object" — ЙОПТА! Давній баг. Не виправляють, бо тупо багато коду спирається не нього.
 
 a = undefined;
 typeof a;				// "undefined"
@@ -109,10 +110,10 @@ typeof a;               // "function"
 
 # Objects
 ```js
-obj.a;		// "hello world"
+obj.a;                  // "hello world"
 ```
 ```js
-obj["a"];	// "hello world"
+obj["a"];               // "hello world"
 ```
 "Лапкова" нотація може використовуватись, коли ім`я властивості зберігається в змінній 
 або властивість містить спеціальні символи.
