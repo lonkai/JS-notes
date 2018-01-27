@@ -115,7 +115,7 @@ obj.a;      // "hello world"
 ```js
 obj["a"];   // "hello world"
 ```
-"Лапкова" нотація може використовуватись, коли ім`я властивості зберігається в змінній 
+"Лапкова" нотація може використовуватись, коли ім'я властивості зберігається в змінній 
 або властивість містить спеціальні символи.
 
 # Built-In Type Methods
@@ -129,7 +129,7 @@ Javascript Engine компілює програму в 2 кроки.
 Запихаємо всі змінні і функції у відповідну коробку(Lexical Environment), яка і буде Scope(Або не буде, можливо не до кінця одне і те саме).
 Самий верхній Scope - global Scope.
 2. Runtime(execution) - робить всі операції, assigning, function execution, etc. 
-Якшо знаходить змінну, яка не є задефайнена, видасть помилку(в strict mode).
+Якшо знаходить змінну, яка не є задефайнена, видасть помилку(в Strict Mode).
 
 # Use Strict
 `"use strict;"` - запуск скрипта в правилах es5, допомагая оптимізувати код. 
@@ -137,13 +137,13 @@ Javascript Engine компілює програму в 2 кроки.
 Наприклад, якшо (implicit defining)ми не задефайнили змінну і Javascript Engine задефайнив її(в global Scope)
 при 2 кроці компіляції - це набагато помаліше.
 
-#Undefined and Not Defined(Not Declared)
+# Undefined and Not Defined(Not Declared)
 `Undefined` - задефайнина змінна, в якої нема значення.
 
 `Not Defined` - не задефайнили змінну.
 
 # LHS & RHS (Left-Hand Side and Right-Hand Side)
-LHS - target reference, коли ми дефайнимо змінну, функцію
+LHS - target reference, коли ми дефайнимо змінну, функцію.
 
 RHS - source reference, коли ми есайнимо значення змінній, виконання функції.
 
@@ -151,7 +151,7 @@ RHS - source reference, коли ми есайнимо значення змін
 
 Якшо потрібно писати Function Expression, то краще вибрати Named Function Expression, тому шо:
 1. Handy function self-reference. Можна всередині функції викликати herself. Fuck recursion!
-2. More debuggable stack traces. В консольці замість anonymus function буде ім`я проблемної функції. Profit!
+2. More debuggable stack traces. В консольці замість anonymus function буде ім'я проблемної функції. Profit!
 3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(при умові, шо ти не мудак, і норм назвеш). 
 А шо ти будеш знати з анонімної фунції?! Fuckin Amazing!
 
@@ -171,7 +171,7 @@ var foo = function bar() {
 foo();
 bar();   //error
 ```
-Error, тому шо в функція `bar` об`явлена не як Function Declaration(слово function - перше в Statement),
+Error, тому шо в функція `bar` об'явлена не як Function Declaration(слово function - перше в Statement),
 а як Named Function Expression і належить internal Scope.
 Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому,
 а Function Expression і Named Function Expression - HI.
@@ -272,7 +272,7 @@ console.log(foo);   // "foo" -- perfect!
 І це означає, шо `bob` вже є в іншому(своєму) Scope. І виконується immediately сама.
 
 # Block Scoping
-### Let
+### let
 ```js
 function diff(x,y) {
     if (x > y) {
@@ -302,8 +302,8 @@ function repeat(fn,n) {
 Тут ми юзаєм `let` бо ми не хочем доступатись до `i` out of Scope of `for`.
 Але, є випадки, коли нам це потрібно, тоді ми пишемо `var`.
 Тому не треба просто замінювати `var` на `let`, більш useful використовувати `let` + `var`.
-### Var and Let
-Наприклад тут `var > let`
+### var vs let
+Наприклад, тут `var > let`
 ```js
 function lookupRecord(searchStr) {
     try {
@@ -318,8 +318,8 @@ function lookupRecord(searchStr) {
 `var` ми можемо заюзати багато разів, коли повторний `let` верне нам помилку.
 Ми декларуємо змінну на 5 лінійці, на 1000 ми можемо ше раз задекларувати, шоб легше знайти, кому належить змінна.
 З `let` ми цього не зробимо.
-Кайл базарить, шо об`явити один раз всі змінні зверху це не така і хороша ідея.
-Краще об`являти змінні там, де вони юзаються в рамках одного скріна. 
+Кайл базарить, шо об'явити один раз всі змінні зверху це не така і хороша ідея.
+Краще об'являти змінні там, де вони юзаються в рамках одного скріна. 
 
 ### Const
 ```js
@@ -333,8 +333,8 @@ const c = [2];
 c[0]++;   // 3 <--- oops!?
 ```
 Є типова помилка. `const` - змінна, яка не може бути переесайнена, а не змінна, яка не може змінитись.
-Краще не піхати в `const` массиви, функції, об`єкти.
-const працює так, як `let` і робить Block Scoping
+Краще не піхати в `const` массиви, функції, об'єкти.
+const працює так, як `let` і робить Block Scoping.
 
 ### Explicit let block
 ```js
@@ -351,8 +351,9 @@ function formatStr(str) {
     return str.slice(4);
 }
 ```
+Таке можна творити, Кайл рекомендує.
 
-#Quiz
+# Quiz
 
 Три шляхи створення new scoped variable:
 1. let в блоці чи функції
