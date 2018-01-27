@@ -6,7 +6,7 @@
 
 В дужках всі expressions `((a) = ((b) * (2)));`
 
-Очевидно, шо разом це statement.
+Очевидно, шо разом це Statement.
 
 `a = b * 2 + foo(c * 3);` - так, як в  нас вже є (), юзанем [].
 
@@ -21,9 +21,9 @@ a = 2
 mov 2,a
 10010100101010101011110101010101010101011110 - lowest lvl programming
 ```
-Javasript engine – те, шо перетворює javascript на код нижчого рівня, встроєний в більшість браузерів.
+Javasript Engine – те, шо перетворює Javascript на код нижчого рівня, встроєний в більшість браузерів.
 
-Javascript – мова скриптів, її вважають інтерпретуючою мовою, тому шо ми считуємо стейтмент за стейтментом. Коли ми виконуємо 3 стейтмент, ми не знаємо, шо буде в 5 стейтменті. Але це не зовсім так. Javascript схожий на компілюючу мову, де спочатку engine проходить весь код, якшо код коректний, тоді ранить його(2 етапи). В Javascript програмі, коли є два стейтменти і один з них неправильний, перший стейтмент не зараниться.
+Javascript – мова скриптів, її вважають інтерпретуючою мовою, тому шо ми считуємо стейтмент за стейтментом. Коли ми виконуємо 3 стейтмент, ми не знаємо, шо буде в 5 стейтменті. Але це не зовсім так. Javascript схожий на компілюючу мову, де спочатку Javascript Engine проходить весь код, якшо код коректний, тоді ранить його(2 етапи). В Javascript програмі, коли є два стейтменти і один з них неправильний, перший стейтмент не зараниться.
 
 # Conversion and Coersion(not obvious)
 Зведення типів.
@@ -38,7 +38,7 @@ c = Boolean(a);
 a = a + "";
 ```
 # Block
-Об’єднання statements
+Об’єднання Statements
 ```js
 {
     var a = 42;
@@ -121,20 +121,20 @@ obj["a"];   // "hello world"
 # Built-In Type Methods
 
 
-# Shadowing variables when we have the 2 vars with the same name in different scopes.
+# Shadowing variables when we have the 2 vars with the same name in different Scopes.
 
 # Compiling
 Javascript Engine компілює програму в 2 кроки.
 1. Find Formal Declaration - проходимось по всіх дефайнінгах змінних, функції, etc.
 Запихаємо всі змінні і функції у відповідну коробку(Lexical Environment), яка і буде Scope(Або не буде, можливо не до кінця одне і те саме).
-Самий верхній scope - global scope.
+Самий верхній Scope - global Scope.
 2. Runtime(execution) - робить всі операції, assigning, function execution, etc. 
 Якшо знаходить змінну, яка не є задефайнена, видасть помилку(в strict mode).
 
 # Use Strict
 `"use strict;"` - запуск скрипта в правилах es5, допомагая оптимізувати код. 
 В більшості випадків, якшо не дотримуватись його, код буде виконуватись помаліше.
-Наприклад, якшо (implicit defining)ми не задефайнили змінну і Javascript Engine задефайнив її(в global scope)
+Наприклад, якшо (implicit defining)ми не задефайнили змінну і Javascript Engine задефайнив її(в global Scope)
 при 2 кроці компіляції - це набагато помаліше.
 
 #Undefined and Not Defined(Not Declared)
@@ -172,9 +172,9 @@ var foo = function bar() {
 foo();
 bar();   //error
 ```
-Error, тому шо в функція bar об`явлена не як Function Declaration(слово function - перше в statement),
-а як Named Function Expression і належить internal scope.
-Іншими словами Function Declaration аттачить саму функції до external scope і її можна буде викликати в ньому,
+Error, тому шо в функція bar об`явлена не як Function Declaration(слово function - перше в Statement),
+а як Named Function Expression і належить internal Scope.
+Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому,
 а Function Expression і Named Function Expression - HI.
 
 # Lexical Scope vs Dynamic Scope
@@ -241,9 +241,9 @@ console.log(foo);   // "foo2" -- oops!
 ```
 Коли в нас є великий проект якіта, і ми задефайнили foo, крім нас є ше чуваки і вони, з якоїсь причини, також задефайнили foo, в результаті
 вийшов трабл. Шоб уникнути цього і інкапсулюватись можна просто створити Scope.
-Інкапсуляція - винесення всіх даних і функцій, об`єднаних одним сенсом, в єдину сутність(в javascript це робиться через функції, в інших мовах через модифікатори доступу).
+Інкапсуляція - винесення всіх даних і функцій, об`єднаних одним сенсом, в єдину сутність(в Javascript це робиться через функції, в інших мовах через модифікатори доступу).
 При цьому для користувача дані ховаються в сутності і доступні тільки всередині неї.
-unit of scope - function.
+unit of Scope - function.
 Але, для прикладу, в es6
 ```js
 function diff(x,y) {
@@ -283,7 +283,7 @@ var foo = "foo"
 
 console.log(foo);   // "foo" -- nice!
 ```
-Чому це Function Expression?Дуже просто, тому шо слова function не є першим в statement :)
-І це означає, шо 'bob' вже є в іншому(своєму) scope. І виконується сама негайно immediately.
+Чому це Function Expression?Дуже просто, тому шо слова function не є першим в Statement :)
+І це означає, шо 'bob' вже є в іншому(своєму) Scope. І виконується сама негайно immediately.
 
 
