@@ -138,9 +138,9 @@ Javascript Engine компілює програму в 2 кроки.
 при 2 кроці компіляції - це набагато помаліше.
 
 #Undefined and Not Defined(Not Declared)
-Undefined - задефайнина змінна, в якої нема значення.
+`Undefined` - задефайнина змінна, в якої нема значення.
 
-Not Defined - не задефайнили змінну.
+`Not Defined` - не задефайнили змінну.
 
 # LHS & RHS (Left-Hand Side and Right-Hand Side)
 LHS - target reference, коли ми дефайнимо змінну, функцію
@@ -154,7 +154,6 @@ RHS - source reference, коли ми есайнимо значення змін
 2. More debuggable stack traces. В консольці замість anonymus function буде ім`я проблемної функції. Profit!
 3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(при умові, шо ти не мудак, і норм назвеш). 
 А шо ти будеш знати з анонімної фунції?! Fuckin Amazing!
-
 
 # Lexical Scope
 
@@ -172,14 +171,14 @@ var foo = function bar() {
 foo();
 bar();   //error
 ```
-Error, тому шо в функція bar об`явлена не як Function Declaration(слово function - перше в Statement),
+Error, тому шо в функція `bar` об`явлена не як Function Declaration(слово function - перше в Statement),
 а як Named Function Expression і належить internal Scope.
 Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому,
 а Function Expression і Named Function Expression - HI.
 
 # Lexical Scope vs Dynamic Scope
 Більшість мов мають або Lexical Scope, або Dynamic Scope.
-В Javascript, як я розумію, можна використовувати обидва підходи.
+В Javascript є тільки Lexical Scope.
 
 Lexical Scope is predictable.
 
@@ -218,7 +217,7 @@ var foo;
 try {
     foo.length;
 }
-catch err {
+catch (err) {
     console.log(err);   //TypeError
 }
 };
@@ -243,22 +242,8 @@ console.log(foo);   // "foo2" -- oops!
 вийшов трабл. Шоб уникнути цього і інкапсулюватись можна просто створити Scope.
 Інкапсуляція - винесення всіх даних і функцій, об`єднаних одним сенсом, в єдину сутність(в Javascript це робиться через функції, в інших мовах через модифікатори доступу).
 При цьому для користувача дані ховаються в сутності і доступні тільки всередині неї.
-unit of Scope - function.
-Але, для прикладу, в es6
-```js
-function diff(x,y) {
-    if (x > y) {
-        let tmp = x;
-        x = y;
-        y = tmp;
-    }
-}
-```
-Тут `tmp` не належить Scope of diff.
-`tmp` належить Scope of `if (x > y)`.
-Але в `if (x > y)` нема Scope.
-Не біда, `let` його створить. Створить Scope з Lexical Environment(нашу коробку) і добавить туди `tmp`
-fantastisch!
+unit of Scope - function. Але в es6 за допомогою `let` ми можем робити Block Scoping.
+
 ```js
 var foo = "foo"
 
@@ -268,7 +253,7 @@ function bob() {
 }
 bob();
 
-console.log(foo);   // "foo" -- nice!
+console.log(foo);   // "foo" -- nice, but..
 ```
 Але нам потрібно визвати цю функцію `bob()`, тому шо це Function Declaration.
 А якийсь мудак назве свою функцію так само, це не вирішить наш трабл до кінця. 
@@ -281,9 +266,96 @@ var foo = "foo"
     console.log(foo);
 } )();
 
-console.log(foo);   // "foo" -- nice!
+console.log(foo);   // "foo" -- perfect!
 ```
 Чому це Function Expression?Дуже просто, тому шо слова function не є першим в Statement :)
-І це означає, шо 'bob' вже є в іншому(своєму) Scope. І виконується сама негайно immediately.
+І це означає, шо `bob` вже є в іншому(своєму) Scope. І виконується immediately сама.
 
+# Block Scoping
+### Let
+```js
+function diff(x,y) {
+    if (x > y) {
+        let tmp = x;
+        x = y;
+        y = tmp;
+    }
+    console.log(tmp);   // ReferenceRrror
+    return y - x;
+}
+```
+Тут `tmp` не належить Scope of `diff`.
+`tmp` належить Scope of `if (x > y)`.
+Але в `if (x > y)` нема Scope.
+Не біда, `let` його створить. Створить Scope з Lexical Environment(нашу коробку) і добавить туди `tmp`
+fantastisch!
 
+```js
+function repeat(fn,n) {
+    var result;
+
+    for (let i = 0; i < n; i++) {
+        result = fn(result,i);
+    }
+}
+```
+Тут ми юзаєм `let` бо ми не хочем доступатись до `i` out of Scope of `for`.
+Але, є випадки, коли нам це потрібно, тоді ми пишемо `var`.
+Тому не треба просто замінювати `var` на `let`, більш useful використовувати `let` + `var`.
+### Var and Let
+Наприклад тут `var > let`
+```js
+function lookupRecord(searchStr) {
+    try {
+        var id = getRecord(searchStr);
+    }
+    catch (err) {
+        var id = -1;
+    }
+    return id;
+}
+```
+`var` ми можемо заюзати багато разів, коли повторний `let` верне нам помилку.
+Ми декларуємо змінну на 5 лінійці, на 1000 ми можемо ше раз задекларувати, шоб легше знайти, кому належить змінна.
+З `let` ми цього не зробимо.
+Кайл базарить, шо об`явити один раз всі змінні зверху це не така і хороша ідея.
+Краще об`являти змінні там, де вони юзаються в рамках одного скріна. 
+
+### Const
+```js
+var a = 2;
+a++;   // 3
+
+const b = 2;
+b++   // Error!
+
+const c = [2];
+c[0]++;   // 3 <--- oops!?
+```
+Є типова помилка. `const` - змінна, яка не може бути переесайнена, а не змінна, яка не може змінитись.
+Краще не піхати в `const` массиви, функції, об`єкти.
+const працює так, як `let` і робить Block Scoping
+
+### Explicit let block
+```js
+function formatStr(str) {
+    { let prefix, rest;
+        prefix = str.slice (0, 3);
+        rest = str.slice (3);
+        str = prefix.toUpperCase() + rest;
+    }
+
+    if (/^F00:/.test(str)) {
+        return str;
+    }
+    return str.slice(4);
+}
+```
+
+#Quiz
+
+Три шляхи створення new scoped variable:
+1. let в блоці чи функції
+2. var в функції
+3. catch (err)
+Відмінність між Undeclared і Undefined - Undeclared не існує, не задефайнене в Scope, а Undefined є в Scope, але не має значення.
