@@ -124,7 +124,7 @@ obj["a"];   // "hello world"
 # Shadowing variables when we have the 2 vars with the same name in different scopes.
 
 # Compiling
-Javascript engine компілює програму в 2 кроки.
+Javascript Engine компілює програму в 2 кроки.
 1. Find Formal Declaration - проходимось по всіх дефайнінгах змінних, функції, etc.
 Запихаємо всі змінні і функції у відповідну коробку(Lexical Environment), яка і буде Scope(Або не буде, можливо не до кінця одне і те саме).
 Самий верхній scope - global scope.
@@ -134,23 +134,25 @@ Javascript engine компілює програму в 2 кроки.
 # Use Strict
 `"use strict;"` - запуск скрипта в правилах es5, допомагая оптимізувати код. 
 В більшості випадків, якшо не дотримуватись його, код буде виконуватись помаліше.
-Наприклад, якшо (implicit defining)ми не задефайнили змінну і javascript engine задефайнив її(в global scope)
+Наприклад, якшо (implicit defining)ми не задефайнили змінну і Javascript Engine задефайнив її(в global scope)
 при 2 кроці компіляції - це набагато помаліше.
 
 #Undefined and Not Defined(Not Declared)
 Undefined - задефайнина змінна, в якої нема значення.
+
 Not Defined - не задефайнили змінну.
 
 # LHS & RHS (Left-Hand Side and Right-Hand Side)
 LHS - target reference, коли ми дефайнимо змінну, функцію
+
 RHS - source reference, коли ми есайнимо значення змінній, виконання функції.
 
 # Function Declaration, Function Expression(anonymus) and Named Function Expression
 
 Якшо потрібно писати Function Expression, то краще вибрати Named Function Expression, тому шо:
-1. Handy function self-reference. Можна всередині функції викликати її ж саму. Fuck recursion!
+1. Handy function self-reference. Можна всередині функції викликати herself. Fuck recursion!
 2. More debuggable stack traces. В консольці замість anonymus function буде ім`я проблемної функції. Profit!
-3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(при умові, шо ти не мудак, і назвеш її норм). 
+3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(при умові, шо ти не мудак, і норм назвеш). 
 А шо ти будеш знати з анонімної фунції?! Fuckin Amazing!
 
 
@@ -178,7 +180,9 @@ Error, тому шо в функція bar об`явлена не як Function 
 # Lexical Scope vs Dynamic Scope
 Більшість мов мають або Lexical Scope, або Dynamic Scope.
 В Javascript, як я розумію, можна використовувати обидва підходи.
+
 Lexical Scope is predictable.
+
 Dynamic Scope is flexibale.
 
 ### Lexical Scope
@@ -238,7 +242,7 @@ console.log(foo);   // "foo2" -- oops!
 Коли в нас є великий проект якіта, і ми задефайнили foo, крім нас є ше чуваки і вони, з якоїсь причини, також задефайнили foo, в результаті
 вийшов трабл. Шоб уникнути цього і інкапсулюватись можна просто створити Scope.
 Інкапсуляція - винесення всіх даних і функцій, об`єднаних одним сенсом, в єдину сутність(в javascript це робиться через функції, в інших мовах через модифікатори доступу).
-При цьому для користувача дані ховаються в сутності і доступні тільки всередині її.
+При цьому для користувача дані ховаються в сутності і доступні тільки всередині неї.
 unit of scope - function.
 Але, для прикладу, в es6
 ```js
@@ -280,6 +284,6 @@ var foo = "foo"
 console.log(foo);   // "foo" -- nice!
 ```
 Чому це Function Expression?Дуже просто, тому шо слова function не є першим в statement :)
-І це означає, шо 'bob' вже є в іншому(своєму) scope. І виконується сама негайно(iшmmediately)
+І це означає, шо 'bob' вже є в іншому(своєму) scope. І виконується сама негайно immediately.
 
 
