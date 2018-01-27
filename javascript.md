@@ -138,9 +138,9 @@ Javascript Engine компілює програму в 2 кроки.
 при 2 кроці компіляції - це набагато помаліше.
 
 # Undefined and Not Defined(Not Declared)
-`Undefined` - задефайнина змінна, в якої нема значення.
+`Undefined` - задефайнена змінна, існує в Scope, але не має значення.
 
-`Not Defined` - не задефайнили змінну.
+`Undeclared`,`Not Defined` - не існує, не задефайнена змінна в Scope.
 
 # LHS & RHS (Left-Hand Side and Right-Hand Side)
 LHS - target reference, коли ми дефайнимо змінну, функцію.
@@ -359,4 +359,4 @@ function formatStr(str) {
 1. let в блоці чи функції
 2. var в функції
 3. catch (err)
-Відмінність між Undeclared і Undefined - Undeclared не існує, не задефайнене в Scope, а Undefined є в Scope, але не має значення.
+
