@@ -176,7 +176,7 @@ Error, тому шо в функція `bar` об'явлена не як Functio
 Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому,
 а Function Expression і Named Function Expression - HI.
 
-# Lexical Scope vs Dynamic Scope
+#№№ Lexical Scope vs Dynamic Scope
 Більшість мов мають або Lexical Scope, або Dynamic Scope.
 В Javascript є тільки Lexical Scope.
 
@@ -210,6 +210,11 @@ function baz() {
 
 baz();
 ```
+### New Scoped Variable
+Як створити змінну в новому Scope. Є 3 шляхи:
+1. let в блоці чи функції.
+2. var в функції.
+3. catch (err).
 
 # Try Catch
 ```js
@@ -422,7 +427,9 @@ function foo(bar) {
 При `let` виконується тільки декларування до Scope, без assign. Тому в нас `ReferenceError`.
 
 # Closure
-Замикання - це коли функція пам'ятає свій Lexical Scope навіть тоді, коли вона виконана за межами цього Lexical Scope.
+Замикання - це коли функція пам'ятає свій Lexical Scope, коли вона виконана за межами цього Lexical Scope.
+Щоб створити замикання потрібно створити функцію всередині іншого Scope і послатись на змінну з зовнішнього `Scope`.
+Цей інший `Scope` залишається з функцію так довго, як будуть замкнені змінні. Якшо цих замкнутих змінних не стане, Garbage Collector захаває цей Scope.
 ```js
 function foo() {
     var bar = "bar";
@@ -488,12 +495,111 @@ foo();
 Те саме.
 Замикання продовжує життя цих змінних настільки наскільки це потрібно функції, яка виконує це замикання.
 Іншими словами, Closure запобігає роботі Garbage Collector.
+### Loops
+```js
+for (var i=1; i<=5; i++) {
+    setTimeout(function() {
+        console.log("i: " + i);
+    }, i*1000);
+}
+```
+На виході не буде того, шо ми очікуємо, бо ми не кріейтимо нову `i` кожен раз. 
+Нема нової `i` для кожної нової ітерації.
+В нас буде `(5)i: 6`.
+Застосуємо IIFE.
+```js
+for (var i=1; i<=5; i++) {
+    (function(i) {
+        setTimeout(function() {
+            console.log("i: " + i);
+        }, i*1000);
+    })(i);
+}
+```
+Ми кожен раз створили новий Scope з новою `i` і одержимо очікуваний результат.
+### Loops + Block Scope
+```js
+for (var i=1; i<=5; i++) {
+    let j = i;
+    setTimeout(function() {
+            console.log("j: " + j);
+    }, i*1000);
+}
+```
+Ми замикаємо кожен раз нову `j`.
+Ми можемо навіть окремо не дефайнити `j` через `let`.
+Можна записати так
+```js
+for (let i=1; i<=5; i++) {
+    setTimeout(function() {
+            console.log("i: " + i);
+    }, i*1000);
+}
+```
+Тобто діло було в тому, шо нам у цьому випадку потрібно було замикати кожен раз нову `i`,
+а не ту саму, як було з `var`.
 
+# Modules
+Інкапсуляція це приховання тих змінних, методів etc, які не є необхідні для використання ззовні.
+Для паттерна Module потрібно
+1. Одна зовнішня enclosed(обгороджена) функція, яка буде виконуватись лише раз.
+2. Внутрішня функція, яка буде робити замикання на внутрішній Scope і ретурнати publicAPI(публічний інтерфейс).
 
-# Quiz
+Переваги паттерну:
+1. Організація коду, хоча для цього ми могли юзати Namespaces.
+2. Обмежувати доступ до того, чого ми не хочемо, шоб використовували чи використали непередбачувано. Інкапсуляція.
+Недоліки паттерну:
+1. Тестування. Як протестити(unit tests) фунція, яка є прихованою? Кайл каже, шо на його думку, потрібно тестити тільки publicAPI.
+### Classic Module Pattern
+```js
+var foo = (function() {
+    var o = { bar: "bar" };
 
-Три шляхи створення new scoped variable:
-1. let в блоці чи функції
-2. var в функції
-3. catch (err)
+    return {
+        bar: function() { 
+            console.log(o.bar);
+        }
+    };
+})();
+foo.bar();   // "bar"
+foo.o;   // undefined
+```
+### Classic Module Pattern: modified
+```js
+var foo = (function() {
+    var publicAPI = {
+        bar: function() {
+            publicAPI.baz();
+        },
+        baz: function() {
+            console.log("baz");
+        }
+    };
+    return publicAPI;
+})();
+foo.bar();   // "baz"
+```
+### ES6 + Module Pattern
+`foo.js`
+```js
+var o = { bar: "bar" };
+
+export function bar() {
+    return o.bar;
+};
+```
+```js
+import { bar } from "foo.js";
+
+bar();   // "bar"
+
+import { * } from "foo.js";
+
+foo.bar();   // "bar"
+```
+Кожен модуль це окремий файл. Все, шо не попадає в `export` інкапсулюється.
+Модулі є Singleton, це коли є тільки один instance(екземпляр) в ES6.
+Якшо ми пишемо `import from "foo.js"` 50 разів, ми не рікріейтимо модуль foo.js 50 разів.
+Він буде створений і виконаний лише один раз. І ми будем мати 50 копій reference одного екземпляру модуля.
+
 
