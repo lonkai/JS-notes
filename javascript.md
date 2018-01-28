@@ -1,6 +1,5 @@
 # Statement 
 Інструкція, відділяється `;`.
-
 # Expression
 Вираз, не завжди якась операція, може бути просто число чи змінна.
 
@@ -13,7 +12,6 @@
 `[ [a] = [ [ [b] * [2] ] + [ [foo]([ [c] * [3] ]) ] ] ];`
 
 `*` має більший пріоритет, ніж `+`, шоб обійти це, можна виділити дужками потрібну операцію.
-
 # Programming LVL
 ```js
 Set the variable a to the value 2 - highest lvl programming
@@ -24,7 +22,6 @@ mov 2,a
 Javasript Engine – те, шо перетворює Javascript на код нижчого рівня. Javasript Engine встроєний в більшість браузерів.
 
 Javascript – мова скриптів, її вважають інтерпретуючою мовою. Але це не зовсім так. Javascript схожий і на компілюючу мову, де спочатку Javascript Engine по суті компілює код зразу перед виконанням і ця компіляція проходить в 2 етапи. В Javascript програмі, коли є 2 стейтменти і один з них неправильний, перший стейтмент не виконається.
-
 # Conversion and Coersion(not obvious)
 Зведення типів.
 ### Conversion
@@ -46,7 +43,6 @@ Block - об’єднання Statements.
 }
 ```
 Блок виділяти `;` не потрібно.
-
 # Functions
 * `function foo() {}` – function declaration
 * `var bar = function() {}` – function expression attached to variable declaration
@@ -57,7 +53,6 @@ b,bar,zaz - параметри
 
 `foo(100);` 
 “100” - аргумент
-
 # “Falsy” values:
 ```js
 0
@@ -117,7 +112,6 @@ obj["a"];   // "hello world"
 ```
 "Лапкова" нотація здебільшого використовується, коли ім'я властивості зберігається в змінній 
 або властивість містить спеціальні символи.
-
 # Built-In Type Methods
 
 # Shadowing variables when we have the 2 vars with the same name in different Scopes.
@@ -126,34 +120,30 @@ obj["a"];   // "hello world"
 Javascript Engine компілює програму в 2 етапи:
 1. Find Formal Declaration - проходимось по LHS, шукаємо декларейшни, проходимось по всіх дефайнінгах змінних і функції(only Function Declaration).
 Поміщаємо всі змінні і функції(Function Declaration) у відповідну скриньку(Lexical Environment), яка аттачиться до Scope(по суті Lexical Environment == Lexical Scope, можливо поняття Scope дещо ширше).
-* Самий верхній Scope - global Scope.
-2. Runtime(execution) - проходимось по RHS, виконуємо всі операції, assigning, function execution, etc. 
-* Якшо знаходить змінну, яка не була задефайнена на 1 етапі компіляції, задефайнить її(Implicit Defining) в Global Scope або видасть помилку(в Strict Mode).
 
+Самий верхній Scope - global Scope.
+2. Runtime(execution) - проходимось по RHS, виконуємо всі операції, assigning, function execution, etc. 
+
+Якшо знаходить змінну, яка не була задефайнена на 1 етапі компіляції, задефайнить її(Implicit Defining) в Global Scope або видасть помилку(в Strict Mode).
 # Use Strict
 `"use strict;"` - скрипт виконується згідно правил es5.
-* Це допоможе уникнути різних непередбачуваних ситуацій і оптимізує наш код.
-* У більшості випадків, якшо не дотримуватись його, код буде виконуватись значно повільніше.
+Це допоможе уникнути різних непередбачуваних ситуацій і оптимізує наш код.
+У більшості випадків, якшо не дотримуватись його, код буде виконуватись значно повільніше.
 Наприклад, Implicit Defining, якшо ми не задефайнили змінну і Javascript Engine в Runtime задефайнив її(в Global Scope)
 Ця операція буде значно повільніша.
-
 # Undefined and Not Defined(Not Declared)
 * `Undefined` - задефайнена змінна, існує в Scope, але не має значення.
 * `Undeclared`,`Not Defined` - не існує, не задефайнена змінна в Scope.
-
 # LHS & RHS (Left-Hand Side and Right-Hand Side)
 * LHS - target reference, коли ми дефайнимо змінну, функцію(only Function Declaration).
 * RHS - source reference, коли ми есайнимо значення змінній, виконання функції.
-
 # Function Declaration, Function Expression(anonymus) and Named Function Expression
 Якшо потрібно писати Function Expression, то краще вибрати Named Function Expression, тому шо:
 1. Handy function self-reference. Можна всередині функції викликати herself. Fuck recursion!
 2. More debuggable stack traces. В консольці замість anonymus function буде ім'я проблемної функції. Profit!
 3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(якшо назвати її правильно). 
 А шо ти будеш знати з анонімної фунції?! Fuckin Amazing!
-
 # Lexical Scope
-
 ```js
 var foo = function bar() {
     var foo = "baz";
@@ -168,19 +158,13 @@ var foo = function bar() {
 foo();
 bar();   //error
 ```
-Error, тому шо в функція `bar` об'явлена не як Function Declaration(слово function - перше в Statement),
-а як Named Function Expression і належить internal Scope.
-Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому,
-а Function Expression і Named Function Expression - HI.
-
-#№№ Lexical Scope vs Dynamic Scope
+Error, тому шо в функція `bar` об'явлена, як Function Expression і належить internal Scope, а не Function Declaration(коли слово function - перше в Statement).
+Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому, а Function Expression і Named Function Expression - HI.
+### Lexical Scope vs Dynamic Scope
 Більшість мов мають або Lexical Scope, або Dynamic Scope.
 В Javascript є тільки Lexical Scope.
-
-Lexical Scope is predictable.
-
-Dynamic Scope is flexibale.
-
+* Lexical Scope is predictable.
+* Dynamic Scope is flexibale.
 ### Lexical Scope
 ```js
 function foo() {
@@ -212,7 +196,6 @@ baz();
 1. let в блоці чи функції.
 2. var в функції.
 3. catch (err).
-
 # Try Catch
 ```js
 var foo;
@@ -226,7 +209,6 @@ catch (err) {
 
 console.log(err);   // ReferenceError
 ```
-
 # IIFE(Immediately-Invoked Function Expression)
 ```js
 var foo = "foo"
@@ -240,12 +222,11 @@ console.log(foo);   // "foo2"
 
 console.log(foo);   // "foo2" -- oops!
 ```
-Коли в нас є великий проект якіта, і ми задефайнили foo, крім нас є ше чуваки і вони, з якоїсь причини, також задефайнили foo, в результаті
-вийшов трабл. Шоб уникнути цього і інкапсулюватись можна просто створити Scope.
+Нехай в нас є великий проект, ми задефайнили змінну foo, але крім нас є ше девелопери і, з якоїсь причини, хтось також задефайнив foo, в результаті
+виходить конфуз і зламана функціональність. Шоб уникнути цього, відгородитись, інкапсулюватись можна просто створити Scope.
 Інкапсуляція - винесення всіх даних і функцій, об`єднаних одним сенсом, в єдину сутність(в Javascript це робиться через функції, в інших мовах через модифікатори доступу).
-При цьому для користувача дані ховаються в сутності і доступні тільки всередині неї.
-unit of Scope - function. Але в es6 за допомогою `let` ми можем робити Block Scoping.
-
+При цьому дані, які не потрібні корустувачу приховуються в сутності і доступні тільки всередині неї.
+unit of Scope - function. Але в ES6 за допомогою `let` ми можем створювати Block Scoping.
 ```js
 var foo = "foo"
 
@@ -257,8 +238,8 @@ bob();
 
 console.log(foo);   // "foo" -- nice, but..
 ```
-Але нам потрібно визвати цю функцію `bob()`, тому шо це Function Declaration.
-А якийсь мудак назве свою функцію так само, це не вирішить наш трабл до кінця. 
+Нам потрібно окремо виконувати функцію через `bob()`, це ж Function Declaration.
+Але хтось може назвати свою функцію так само, тому це не вирішить проблему до кінця. 
 Тоді ми перетворимо функцію в Function Expression!
 ```js
 var foo = "foo"
@@ -271,8 +252,7 @@ var foo = "foo"
 console.log(foo);   // "foo" -- perfect!
 ```
 Чому це Function Expression? Дуже просто, тому шо слова function не є першим в Statement :)
-І це означає, шо `bob` вже є в іншому(своєму) Scope. І виконується immediately сама.
-
+Це означає, шо `bob` вже є в іншому(своєму) internal Scope і виконується immediately сама.
 # Block Scoping
 ### let
 ```js
@@ -288,10 +268,9 @@ function diff(x,y) {
 ```
 Тут `tmp` не належить Scope of `diff`.
 `tmp` належить Scope of `if (x > y)`.
-Але в `if (x > y)` нема Scope.
-Не біда, `let` його створить. Створить Scope з Lexical Environment(нашу коробку) і добавить туди `tmp`
+Але так не може бути, в `if (x > y)` нема Scope!
+Не біда, `let` його створить, Scope з Lexical Environment(нашу скриньку) і добавить туди `tmp`.
 fantastisch!
-
 ```js
 function repeat(fn,n) {
     var result;
