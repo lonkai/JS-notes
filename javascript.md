@@ -353,6 +353,143 @@ function formatStr(str) {
 ```
 Таке можна творити, Кайл рекомендує.
 
+# Hoisting
+Дефайнення змінних і функцій відбувається на 1 кроці компіляції.
+Тим самим ми, ніби переносим всі define наверх перед виконанням операцій.
+Hoisting це додавання в Scope, коли дефайнення йде після виклику.
+```js
+a;   // ???
+b;   // ???
+var a = b;
+var b = 2;
+b;   // 2
+a;   // ???
+```
+при компіляції цей код, по суті, перетворюється на
+```js
+var a;
+var b;
+a;   // undefined
+b;   // undefined
+a = b;
+b = 2;
+b;   // 2
+a;   // undefined
+```
+з функціями(Function Declaration) така ж сама історія
+```js
+var a = b();
+var c = d();
+a;   // ???
+b;   // ???
+
+function b() {
+    return c;
+}
+
+var d = function() {
+    return b();
+};
+```
+хойститься як
+```js
+function b() {
+    return c;
+}
+var a;
+var c;
+var d;
+a = b();
+c = d();
+a;   // undefined 
+с;   // undefined
+d = function() {
+    return b();
+};
+```
+Тобто Function Expression не хойститься.
+Також не хойстяться `let`.
+```js
+function foo(bar) {
+    if (bar) {
+        console.log(baz);   // ReferenceError
+        let baz = bar;
+    }
+}
+```
+Точніше хойститься, але не до кінця.
+При `var` наша змінна декларується(додається) в Scope і ессайниться, як `undefined`.
+При `let` виконується тільки декларування до Scope, без assign. Тому в нас ReferenceError.
+
+# Closure
+Замикання - це коли функція пам'ятає свій Lexical Scope навіть тоді, коли вона виконана за межами цього Lexical Scope.
+```js
+function foo() {
+    var bar = "bar";
+
+    function baz() {
+        console.log(bar);
+    }
+
+    bam(baz);
+}
+
+function bam(baz) {
+    baz();   // "bar"
+}
+
+foo();
+```
+Передавати функцію це не єдиний спосіб використати Closure.
+Можна ретурнути функцію.
+```js
+function foo() {
+    var bar = "bar";
+
+    return function() {
+        console.log(bar);
+    };
+
+    bam(baz);
+}
+
+function bam() {
+    foo()();   // "bar", тут ми екзекютим ретурнуту функцію
+}
+
+bam();
+```
+При замиканні Garbage collector не видаляє Scope, і можна доступитись до змінних цього Scope. 
+```js
+function foo() {
+    var bar = "bar";
+
+    seTimeout(function() {
+        console.log(bar);
+    }, 1000);
+}
+
+foo();
+```
+Як ця функція буде виконуватись по таймауту? Garbage Collector мав би її з`їсти вже давно.
+Closure не дає цього зробити і ця функція продовжує виконуватись.
+Функція замикає змінну `bar`.
+```js
+function foo() {
+    var bar = "bar";
+
+    $("#btn").click(function(evt){
+        console.log(bar);
+    });
+}
+
+foo();
+```
+Те саме.
+Замикання продовжує життя цих змінних настільки наскільки це потрібно функції, яка виконує це замикання.
+Іншими словами, Closure запобігає роботі Garbage Collector.
+
+
 # Quiz
 
 Три шляхи створення new scoped variable:
