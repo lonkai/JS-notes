@@ -8,7 +8,7 @@
 
 Очевидно, шо разом це Statement.
 
-`a = b * 2 + foo(c * 3);` - так, як в  нас вже є (), юзанем [].
+`a = b * 2 + foo(c * 3);` - так, як в  нас вже є (), юзаєм [].
 
 `[ [a] = [ [ [b] * [2] ] + [ [foo]([ [c] * [3] ]) ] ] ];`
 
@@ -21,9 +21,9 @@ a = 2
 mov 2,a
 10010100101010101011110101010101010101011110 - lowest lvl programming
 ```
-Javasript Engine – те, шо перетворює Javascript на код нижчого рівня, встроєний в більшість браузерів.
+Javasript Engine – те, шо перетворює Javascript на код нижчого рівня. Javasript Engine встроєний в більшість браузерів.
 
-Javascript – мова скриптів, її вважають інтерпретуючою мовою, тому шо ми считуємо стейтмент за стейтментом. Коли ми виконуємо 3 стейтмент, ми не знаємо, шо буде в 5 стейтменті. Але це не зовсім так. Javascript схожий на компілюючу мову, де спочатку Javascript Engine проходить весь код, якшо код коректний, тоді ранить його(2 етапи). В Javascript програмі, коли є два стейтменти і один з них неправильний, перший стейтмент не зараниться.
+Javascript – мова скриптів, її вважають інтерпретуючою мовою. Але це не зовсім так. Javascript схожий і на компілюючу мову, де спочатку Javascript Engine по суті компілює код зразу перед виконанням і ця компіляція проходить в 2 етапи. В Javascript програмі, коли є 2 стейтменти і один з них неправильний, перший стейтмент не виконається.
 
 # Conversion and Coersion(not obvious)
 Зведення типів.
@@ -38,14 +38,14 @@ c = Boolean(a);
 a = a + "";
 ```
 # Block
-Об’єднання Statements
+Block - об’єднання Statements.
 ```js
 {
     var a = 42;
     foo(a / 2);
 }
 ```
-Після блоку `;` ставити не потрібно.
+Блок виділяти `;` не потрібно.
 
 # Functions
 * `function foo() {}` – function declaration
@@ -106,7 +106,7 @@ typeof a;   // "symbol"
 a = function() {}
 typeof a;   // "function"
 ```
-`typeof null` - давній баг. Не виправляють, бо тупо багато коду спирається не нього.
+`typeof null` - давній баг. Його виправляють, бо занадто багато коду спирається цей баг.
 
 # Objects
 ```js
@@ -115,44 +115,41 @@ obj.a;      // "hello world"
 ```js
 obj["a"];   // "hello world"
 ```
-"Лапкова" нотація може використовуватись, коли ім'я властивості зберігається в змінній 
+"Лапкова" нотація здебільшого використовується, коли ім'я властивості зберігається в змінній 
 або властивість містить спеціальні символи.
 
 # Built-In Type Methods
 
-
 # Shadowing variables when we have the 2 vars with the same name in different Scopes.
 
 # Compiling
-Javascript Engine компілює програму в 2 кроки.
-1. Find Formal Declaration - проходимось по всіх дефайнінгах змінних, функції, etc.
-Запихаємо всі змінні і функції у відповідну коробку(Lexical Environment), яка і буде Scope(Або не буде, можливо не до кінця одне і те саме).
-Самий верхній Scope - global Scope.
-2. Runtime(execution) - робить всі операції, assigning, function execution, etc. 
-Якшо знаходить змінну, яка не є задефайнена, видасть помилку(в Strict Mode).
+Javascript Engine компілює програму в 2 етапи:
+1. Find Formal Declaration - проходимось по LHS, шукаємо декларейшни, проходимось по всіх дефайнінгах змінних і функції(only Function Declaration).
+Поміщаємо всі змінні і функції(Function Declaration) у відповідну скриньку(Lexical Environment), яка аттачиться до Scope(по суті Lexical Environment == Lexical Scope, можливо поняття Scope дещо ширше).
+* Самий верхній Scope - global Scope.
+2. Runtime(execution) - проходимось по RHS, виконуємо всі операції, assigning, function execution, etc. 
+* Якшо знаходить змінну, яка не була задефайнена на 1 етапі компіляції, задефайнить її(Implicit Defining) в Global Scope або видасть помилку(в Strict Mode).
 
 # Use Strict
-`"use strict;"` - запуск скрипта в правилах es5, допомагая оптимізувати код. 
-В більшості випадків, якшо не дотримуватись його, код буде виконуватись помаліше.
-Наприклад Implicit Defining, якшо ми не задефайнили змінну і Javascript Engine задефайнив її(в global Scope)
-при 2 кроці компіляції - це набагато помаліше.
+`"use strict;"` - скрипт виконується згідно правил es5.
+* Це допоможе уникнути різних непередбачуваних ситуацій і оптимізує наш код.
+* У більшості випадків, якшо не дотримуватись його, код буде виконуватись значно повільніше.
+Наприклад, Implicit Defining, якшо ми не задефайнили змінну і Javascript Engine в Runtime задефайнив її(в Global Scope)
+Ця операція буде значно повільніша.
 
 # Undefined and Not Defined(Not Declared)
-`Undefined` - задефайнена змінна, існує в Scope, але не має значення.
-
-`Undeclared`,`Not Defined` - не існує, не задефайнена змінна в Scope.
+* `Undefined` - задефайнена змінна, існує в Scope, але не має значення.
+* `Undeclared`,`Not Defined` - не існує, не задефайнена змінна в Scope.
 
 # LHS & RHS (Left-Hand Side and Right-Hand Side)
-LHS - target reference, коли ми дефайнимо змінну, функцію.
-
-RHS - source reference, коли ми есайнимо значення змінній, виконання функції.
+* LHS - target reference, коли ми дефайнимо змінну, функцію(only Function Declaration).
+* RHS - source reference, коли ми есайнимо значення змінній, виконання функції.
 
 # Function Declaration, Function Expression(anonymus) and Named Function Expression
-
 Якшо потрібно писати Function Expression, то краще вибрати Named Function Expression, тому шо:
 1. Handy function self-reference. Можна всередині функції викликати herself. Fuck recursion!
 2. More debuggable stack traces. В консольці замість anonymus function буде ім'я проблемної функції. Profit!
-3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(при умові, шо ти не мудак, і норм назвеш). 
+3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(якшо назвати її правильно). 
 А шо ти будеш знати з анонімної фунції?! Fuckin Amazing!
 
 # Lexical Scope
