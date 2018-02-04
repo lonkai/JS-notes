@@ -161,7 +161,7 @@ Error, тому шо в функція `bar` об'явлена, як Function Ex
 Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому, а Function Expression і Named Function Expression - HI.
 ### Lexical Scope vs Dynamic Scope
 Більшість мов мають або Lexical Scope, або Dynamic Scope.
-В Javascript є тільки Lexical Scope.
+В Javascript є Lexical Scope і є this, яке є джаваскриптовою версією Dynamic Scope.
 * Lexical Scope is predictable.
 * Dynamic Scope is flexibale.
 ### Lexical Scope
@@ -572,4 +572,81 @@ foo.bar();   // "bar"
 Якшо ми пишемо `import from "foo.js"` 50 разів, ми не рікріейтимо модуль foo.js 50 разів.
 Він буде створений і виконаний лише один раз. І ми будем мати 50 копій reference одного екземпляру модуля.
 
+# Object-Orienting
+### this(context)
+Кожна(крім arrow functions) функція, поки виконується, має reference(вказівник, посилання) на контекст виконання(то, де виконується функція), який називають this.
+Ми говорили, шо в Javascript є тільки Lexical Scope, але this - це джаваскриптова версія Dynamic Scope.
 
+Не важливо, де задана функція, звідки відбувся її виклик, що навколо. Важливо те, як відбувся виклик функції!
+Це і детермінує this - як відбувся виклик функції.
+Є 4 варіанти, як відбувається виклик функції
+* implicit(неявний), `o2.foo();` - виконай функцію `foo` в контексті об'єкту `o2`. "Позичаємо" функцію і сетаємо `this`.
+```js
+function foo() {
+    console.log(this.bar);
+}
+
+var bar = "bar1";
+var o2 = { bar: "bar2", foo: foo };
+var obj = { bar: "bar3" };
+
+
+foo();   // bar1
+o2.foo();   // bar2
+foo.call(obj);   // bar3
+```
+* explicit(явний), `foo.call(obj);` - зроби виклик `foo` і використай `obj`, як контекст. Щоб явно засетати `this` юзам `call` і `apply`. До explicit можна віднести і hard binding. `orig.call(obj);` - захардбіндили контекст. Ми локаєм this до функція і вона завжди тепер буде виконуватись в цьому контексті(крім того випадку, коли ми викличимо функцію через `new`). Це збільшує передбачуваність, але зменшує гнучкість.
+```js
+function foo() {
+    console.log(this.bar);
+}
+
+var obj = { bar: "bar" };
+var obj2 = { bar: "bar2" };
+
+var orig = foo;
+foo = function() { orig.call(obj); };
+
+foo();   // bar
+foo.call(obj2);   // not bar2, but bar
+```
+* new binding, створює новий this для виклику функції.
+```js
+function foo() {
+    this.baz = "baz";
+    console.log(this.bar + " " + baz);
+}
+
+var bar = "bar";
+var baz = new foo();   // ???
+```
+* default binding, якшо не підходить жодному з 3 попередніх правил, то, коли ми не Strict Mode, default binding робить default this = Global Object. В Strict Mode defaut this = undefined. Що призведе до помилки. Не можна так писати.
+
+`new` - "constructor call".
+`new foo()`:
+* створює новий пустий об'єкт
+* лінкує цей об'єкт до іншого об'єкту
+* новостворений об'єкт проходить в цьому контексті до виклику функції
+* повертає this, якшо нічого не вертається(?)
+### Arrow Functions
+Arrow functions не міняють `this`. Вони не мають `this`, вони нічого про це не знають.
+Вони піднімаються на рівень вище і питають чи хтось знає шось про `this`.
+```js
+function foo() {
+    return () => this.bar;
+}
+
+var bar = "bar1";
+var o1 = { bar: "bar2", foo: foo };
+var o2 = { bar: "bar3" };
+
+var f1 = foo();
+var f2 = o1.foo();
+var f3 = foo.call(o2);
+
+f1();   // bar1
+f2();   // bar2
+f3();   // bar3
+
+f1.call(02);   // bar1 <---- hmmm
+```
