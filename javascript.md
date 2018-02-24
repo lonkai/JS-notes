@@ -101,8 +101,6 @@ typeof a;   // "symbol"
 a = function() {}
 typeof a;   // "function"
 ```
-`typeof null` - давній баг. Його виправляють, бо занадто багато коду спирається цей баг.
-
 # Objects
 ```js
 obj.a;      // "hello world"
@@ -231,7 +229,7 @@ var foo = "foo"
 
 function bob() {
     var foo = "foo2";
-    console.log(foo);
+    console.log(foo);   // "foo2"
 }
 bob();
 
@@ -245,7 +243,7 @@ var foo = "foo"
 
 ( function bob() {
     var foo = "foo2";
-    console.log(foo);
+    console.log(foo);   // "foo2"
 } )();
 
 console.log(foo);   // "foo" -- perfect!
