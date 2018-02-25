@@ -21,7 +21,13 @@ mov 2,a
 ```
 Javasript Engine – те, шо перетворює Javascript на код нижчого рівня. Javasript Engine встроєний в більшість браузерів.
 
-Javascript – мова скриптів, її вважають інтерпретуючою мовою. Але це не зовсім так. Javascript схожий і на компілюючу мову, де спочатку Javascript Engine по суті компілює код зразу перед виконанням і ця компіляція проходить в 2 етапи. В Javascript програмі, коли є 2 стейтменти і один з них неправильний, перший стейтмент не виконається.
+Javascript – мова скриптів, її вважають інтерпретуючою мовою. Але це не зовсім так. Javascript схожий і на компілюючу мову, де Javascript Engine по суті компілює код зразу перед виконанням і ця компіляція проходить в 2 етапи. В Javascript програмі, коли є 2 стейтменти і один з них неправильний, перший стейтмент не виконається.
+Традиційно компіляція виконується в 3 кроки:
+1. Розбивка на лексеми(Tokenizing/Lexing). `var a = 2;` буде розбито на  `var`, `a`, `=`, `2` і `;`.
+2. Парсинг. Береться масив лексем і перетворює його в дерево вкладених елементів. Це дерево називається AST(Abstract Syntax Tree). Для `var a = 2;` буде дерево, верхня нода(вузол) якого буде `VariableDeclaration` з дочірніми вузлами `Indentifier` і `AssignmentExpression`, в якого є дочірній вузол `NumericLiteral`, значення якого буде 2.
+3. Генерація коду. Процес, коли береться AST і перетворюється у виконуваний код.
+
+Javasctipt Engine набагато складніший за ці 3 кроки, як і більшість компіляторів. Наприклад, в процесі парсингу і генерації коду є кроки по оптимізації швидкодії виконання, включаючи видалення зайвих елементів.
 # Conversion and Coersion(not obvious)
 Зведення типів.
 ### Conversion
@@ -115,13 +121,19 @@ obj["a"];   // "hello world"
 # Shadowing variables when we have the 2 vars with the same name in different Scopes.
 
 # Compiling
+Scope(Lexical Scope & Dynamick Scope) або Область визначення - це набір правил, які визначають де і як змінна(ідентифікатор) може бути знайдена.
+
 Javascript Engine компілює програму в 2 етапи:
-1. Find Formal Declaration - проходимось по LHS, шукаємо декларейшни, проходимось по всіх дефайнінгах змінних і функції(only Function Declaration).
+1. Find Formal Declaration - проходимось по LHS, шукаємо декларейшни, проходимось по всіх дефайнінгах змінних і функцій(only Function Declaration).
 Поміщаємо всі змінні і функції(Function Declaration) у відповідну скриньку(Lexical Environment), яка аттачиться до Scope(по суті Lexical Environment == Lexical Scope, можливо поняття Scope дещо ширше).
 Самий верхній Scope - global Scope.
 
 2. Runtime(execution) - проходимось по RHS, виконуємо всі операції, assigning, function execution, etc. 
 Якшо знаходить змінну, яка не була задефайнена на 1 етапі компіляції, задефайнить її(Implicit Defining) в Global Scope або видасть помилку(в Strict Mode).
+
+JavaScript Engine перед виконанням спочатку компілює код і, пока він це робить, він розбиває оператори, як `var a = 2;` на два кроки:
+1. `var a`, щоб об'явити її в область видимості. Це відбувається до виконання коду.
+2. `a = 2` шукає змінну(LHS - посилання) і присвоює їй значення, якшо знаходить. 
 # Use Strict
 `"use strict;"` - скрипт виконується згідно правил es5.
 Це допоможе уникнути різних непередбачуваних ситуацій і оптимізує наш код.
@@ -141,6 +153,9 @@ Javascript Engine компілює програму в 2 етапи:
 3. More self-documenting code. Ти будеш знати, шо робить ця функція з її імені(якшо назвати її правильно). 
 А шо ти будеш знати з анонімної фунції?! Fuckin Amazing!
 # Lexical Scope
+Lexical Scope — це область видимості, яка визначена в момент розбивки на лексеми.
+Іншими словами, лексична область видимості основана на тому, де змінні і блоки області видимості були створені під час написання і таким чином(в основному) навічно зафіксовані, коли лексичний аналізатор обробляв ваш код.
+Змінити Lexical Scope можна через `eval` і `with`. Але ці рішення використовувати не бажано. Код не буде оптимізований і це вплине на швидкодії.
 ```js
 var foo = function bar() {
     var foo = "baz";
@@ -155,7 +170,7 @@ var foo = function bar() {
 foo();
 bar();   //error
 ```
-Error, тому шо в функція `bar` об'явлена, як Function Expression і належить internal Scope, а не Function Declaration(коли слово function - перше в Statement).
+Error, тому шо в функція `bar` об'явлена, як Function Expression і належить Internal Scope, а не Function Declaration(коли слово function - перше в Statement).
 Іншими словами Function Declaration аттачить саму функції до external Scope і її можна буде викликати в ньому, а Function Expression і Named Function Expression - HI.
 ### Lexical Scope vs Dynamic Scope
 Більшість мов мають або Lexical Scope, або Dynamic Scope.
