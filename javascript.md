@@ -251,7 +251,8 @@ bob();
 console.log(foo);   // "foo" -- nice, but..
 ```
 Нам потрібно окремо виконувати функцію через `bob()`, це ж Function Declaration.
-Але хтось може назвати свою функцію так само, тому це не вирішить проблему до кінця. 
+Також ми засмічуєм навколишню(в нашому випадку global) Scope ім'ям функції.
+Хтось може назвати свою функцію так само, тому це не вирішить проблему до кінця. 
 Тоді ми перетворимо функцію в Function Expression!
 ```js
 var foo = "foo"
@@ -410,6 +411,49 @@ function foo(bar) {
 Точніше хойститься, але не до кінця.
 При `var` наша змінна декларується(додається) в Scope і ессайниться, як `undefined`.
 При `let` виконується тільки декларування до Scope, без assign. Тому в нас `ReferenceError`.
+Функції хойстяться перед змінними, тому
+```js
+foo(); // 1
+
+var foo;
+
+function foo() {
+	console.log( 1 );
+}
+
+foo = function() {
+	console.log( 2 );
+};
+```
+`var foo` по суті ігнорується.
+Але коли в нас зустрічаються дві функції, то тоді вже перезапишеться
+```js
+foo(); // 3
+
+function foo() {
+	console.log( 1 );
+}
+
+var foo = function() {
+	console.log( 2 );
+};
+
+function foo() {
+	console.log( 3 );
+}
+```
+Тут нам треба застосувати Function Expression
+```js
+foo(); // "b"
+
+var a = true;
+if (a) {
+   function foo() { console.log( "a" ); }
+}
+else {
+   function foo() { console.log( "b" ); }
+}
+```
 # Closure
 Замикання - це коли функція пам'ятає свій Lexical Scope, коли вона виконана за межами цього Lexical Scope.
 Щоб створити замикання потрібно створити функцію всередині іншого Scope і послатись на змінну з зовнішнього `Scope`.
